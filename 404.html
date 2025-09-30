@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>redirecting...</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0d0d0d;
+            color: #e0e0e0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <p id="msg">redirecting...</p>
+
+    <script>
+        async function go() {
+            const slug = window.location.pathname.replace(/^\/+/, "");
+            if (!slug) {
+                document.getElementById("msg").innerText = "no slug provided.";
+                return;
+            }
+
+            try {
+                const res = await fetch("/urls.json");
+                const map = await res.json();
+
+                if (map[slug]) {
+                    window.location.href = map[slug];
+                } else {
+                    document.getElementById("msg").innerText = `no redirect found for "${slug}"`;
+                }
+            } catch (e) {
+                document.getElementById("msg").innerText = "error loading redirects.";
+            }
+        }
+
+        go();
+    </script>
+</body>
+
+</html>
