@@ -30,7 +30,7 @@
             }
 
             try {
-                const res = await fetch("/urls.json");
+                const res = await fetch("urls.json");
                 const map = await res.json();
 
                 if (map[slug]) {
