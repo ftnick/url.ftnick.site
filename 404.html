@@ -23,25 +23,27 @@
 
     <script>
         async function go() {
-            const slug = window.location.pathname.replace(/^\/+/, "");
-            if (!slug) {
-                document.getElementById("msg").innerText = "no slug provided.";
-                return;
-            }
+                const parts = window.location.pathname.split("/").filter(Boolean);
+                const slug = parts.pop();
 
-            try {
-                const res = await fetch("urls.json");
-                const map = await res.json();
-
-                if (map[slug]) {
-                    window.location.href = map[slug];
-                } else {
-                    document.getElementById("msg").innerText = `no redirect found for "${slug}"`;
+                if (!slug) {
+                    document.getElementById("msg").innerText = "no slug provided.";
+                    return;
                 }
-            } catch (e) {
-                document.getElementById("msg").innerText = "error loading redirects.";
+
+                try {
+                    const res = await fetch("urls.json");
+                    const map = await res.json();
+
+                    if (map[slug]) {
+                        window.location.href = map[slug];
+                    } else {
+                        document.getElementById("msg").innerText = `no redirect found for "${slug}"`;
+                    }
+                } catch (e) {
+                    document.getElementById("msg").innerText = "error loading redirects.";
+                }
             }
-        }
 
         go();
     </script>
